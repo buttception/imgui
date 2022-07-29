@@ -1,6 +1,8 @@
 project "imgui"
     kind "StaticLib"
     language "C++"
+    cppdialect "C++20"
+	staticruntime "on"
 
     targetdir("bin/" ..outputdir.. "/%{prj.name}")
     objdir("bin-int/" ..outputdir.. "/%{prj.name}")
@@ -19,11 +21,16 @@ project "imgui"
 		"imstb_truetype.h",
 		"imgui_demo.cpp"
     }
+    
+	filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
 
-    filter "system:windows"
-    systemversion "latest"
-    cppdialect "C++20"
-    staticruntime "On"
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"
 
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MT"
+    filter "configurations:Dist"
+        runtime "Release"
+        optimize "on"
+        symbols "off"
